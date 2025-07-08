@@ -7,6 +7,7 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
+import PlanManagement from "./pages/PlanManagement";
 import Billing from "./pages/Billing";
 import QRMonitoring from "./pages/QRMonitoring";
 import Moderation from "./pages/Moderation";
@@ -26,6 +27,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/users" element={<DashboardLayout><Users /></DashboardLayout>} />
+          <Route path="/plan-management" element={<DashboardLayout><PlanManagement /></DashboardLayout>} />
           <Route path="/billing" element={<DashboardLayout><Billing /></DashboardLayout>} />
           <Route path="/qr-monitoring" element={<DashboardLayout><QRMonitoring /></DashboardLayout>} />
           <Route path="/moderation" element={<DashboardLayout><Moderation /></DashboardLayout>} />

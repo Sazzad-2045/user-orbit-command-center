@@ -8,7 +8,8 @@ import {
   Bell, 
   Settings,
   Home,
-  Building2
+  Building2,
+  Package
 } from "lucide-react"
 
 import {
@@ -27,6 +28,7 @@ import {
 const navigationItems = [
   { title: "Dashboard", url: "/", icon: Home },
   { title: "User Management", url: "/users", icon: Users },
+  { title: "Plan Management", url: "/plan-management", icon: Package },
   { title: "Billing & Payments", url: "/billing", icon: CreditCard },
   { title: "QR Code Monitoring", url: "/qr-monitoring", icon: QrCode },
   { title: "Content Moderation", url: "/moderation", icon: Shield },
