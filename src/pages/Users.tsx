@@ -12,8 +12,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { useToast } from "@/hooks/use-toast"
 
-// Mock user data
-const mockUsers = [
+// User list used in QR Code Monitoring and everywhere else
+export const userProfiles = [
   {
     id: 1,
     name: "John Doe",
@@ -68,8 +68,99 @@ const mockUsers = [
     signupDate: "2024-04-12",
     lastActive: "2024-07-06",
     country: "Germany"
+  },
+  {
+    id: 6,
+    name: "Alice Rahman",
+    email: "alice.rahman@example.com",
+    plan: "Basic",
+    role: "Editor",
+    status: "Active",
+    signupDate: "2024-05-10",
+    lastActive: "2024-07-08",
+    country: "Bangladesh"
+  },
+  {
+    id: 7,
+    name: "Sabbir Hossain",
+    email: "sabbir.hossain@example.com",
+    plan: "Premium",
+    role: "Admin",
+    status: "Active",
+    signupDate: "2024-06-01",
+    lastActive: "2024-07-09",
+    country: "Bangladesh"
+  },
+  {
+    id: 8,
+    name: "Rafiq Islam",
+    email: "rafiq.islam@example.com",
+    plan: "Enterprise",
+    role: "Owner",
+    status: "Inactive",
+    signupDate: "2024-03-15",
+    lastActive: "2024-07-01",
+    country: "Bangladesh"
+  },
+  {
+    id: 9,
+    name: "Mitu Akter",
+    email: "mitu.akter@example.com",
+    plan: "Free",
+    role: "Viewer",
+    status: "Active",
+    signupDate: "2024-04-20",
+    lastActive: "2024-07-08",
+    country: "Bangladesh"
+  },
+  {
+    id: 10,
+    name: "Farhan Ahmed",
+    email: "farhan.ahmed@example.com",
+    plan: "Premium",
+    role: "Admin",
+    status: "Active",
+    signupDate: "2024-02-10",
+    lastActive: "2024-07-09",
+    country: "Bangladesh"
+  },
+  {
+    id: 11,
+    name: "Restaurant BD",
+    email: "info@restaurantbd.com",
+    plan: "Enterprise",
+    role: "Owner",
+    status: "Active",
+    signupDate: "2024-01-25",
+    lastActive: "2024-07-09",
+    country: "Bangladesh"
+  },
+  {
+    id: 12,
+    name: "App Team",
+    email: "support@app.com",
+    plan: "Basic",
+    role: "Editor",
+    status: "Active",
+    signupDate: "2024-03-30",
+    lastActive: "2024-07-08",
+    country: "Bangladesh"
+  },
+  {
+    id: 13,
+    name: "Support Desk",
+    email: "help@support.com",
+    plan: "Free",
+    role: "Viewer",
+    status: "Active",
+    signupDate: "2024-04-01",
+    lastActive: "2024-07-09",
+    country: "Bangladesh"
   }
 ]
+
+// Use userProfiles everywhere instead of mockUsers
+const mockUsers = userProfiles
 
 const plans = ["All Plans", "Free", "Basic", "Premium", "Enterprise"]
 const roles = ["All Roles", "Owner", "Admin", "Editor", "Viewer"]
@@ -329,122 +420,3 @@ export default function Users() {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-6 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-              
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const pageNum = i + 1
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(pageNum)}
-                      isActive={currentPage === pageNum}
-                      className="cursor-pointer"
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              })}
-              
-              <PaginationItem>
-                <PaginationNext 
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
-
-      {/* Edit User Dialog */}
-      <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit User Information</DialogTitle>
-          </DialogHeader>
-          {editingUser && (
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  value={editingUser.name}
-                  onChange={(e) => setEditingUser({...editingUser, name: e.target.value})}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  value={editingUser.email}
-                  onChange={(e) => setEditingUser({...editingUser, email: e.target.value})}
-                />
-              </div>
-              <div>
-                <Label htmlFor="role">Role</Label>
-                <Select value={editingUser.role} onValueChange={(value) => setEditingUser({...editingUser, role: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Owner">Owner</SelectItem>
-                    <SelectItem value="Admin">Admin</SelectItem>
-                    <SelectItem value="Editor">Editor</SelectItem>
-                    <SelectItem value="Viewer">Viewer</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
-            <Button onClick={() => handleEditUser(editingUser)}>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete User Dialog */}
-      <Dialog open={!!deletingUser} onOpenChange={(open) => !open && setDeletingUser(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete User Account</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              This action cannot be undone. Please provide a reason for deleting this account.
-            </p>
-            <div>
-              <Label htmlFor="deleteReason">Why are you deleting this account?</Label>
-              <Textarea
-                id="deleteReason"
-                placeholder="Enter reason for deletion..."
-                value={deleteReason}
-                onChange={(e) => setDeleteReason(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeletingUser(null)}>Cancel</Button>
-            <Button variant="destructive" onClick={handleDeleteUser}>Delete Account</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  )
-}
