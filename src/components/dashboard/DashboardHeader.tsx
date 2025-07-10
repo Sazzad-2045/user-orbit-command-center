@@ -33,7 +33,7 @@ export function DashboardHeader() {
                     className="h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center bg-red-600 text-white border-2 border-white shadow"
                     style={{ backgroundColor: '#ef4444', color: '#fff' }}
                   >
-                    3
+                    2
                   </Badge>
                 </span>
               </span>

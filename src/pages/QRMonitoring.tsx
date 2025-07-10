@@ -219,7 +219,7 @@ export default function QRMonitoring() {
 			{/* Search Filters */}
 			<div className="flex flex-wrap gap-3 mb-4">
 			<input
-				className="input input-sm"
+				className="input input-sm border border-gray-300 focus:border-indigo-400"
 				placeholder="QR Name / Name / Email"
 				onChange={(e) =>
 					setFilters((f) => ({ ...f, user: e.target.value }))
