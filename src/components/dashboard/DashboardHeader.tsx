@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge"
 
 export function DashboardHeader() {
   return (
-    <header className="flex h-16 items-center border-b bg-background px-6">
+    <header className="flex h-16 items-center border-b bg-background px-6 sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <SidebarTrigger />
       {/* Spacer to push icons to the right */}
       <div className="flex-1" />

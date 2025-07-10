@@ -12,161 +12,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
-
-// User list used in QR Code Monitoring and everywhere else
-export const userProfiles = [
-	{
-		id: 1,
-		name: "John Doe",
-		email: "john.doe@example.com",
-		plan: "Premium",
-		role: "Owner",
-		status: "Active",
-		signupDate: "2024-01-15",
-		lastActive: "2024-07-07",
-		country: "United States",
-	},
-	{
-		id: 2,
-		name: "Jane Smith",
-		email: "jane.smith@example.com",
-		plan: "Basic",
-		role: "Admin",
-		status: "Active",
-		signupDate: "2024-02-20",
-		lastActive: "2024-07-05",
-		country: "Canada",
-	},
-	{
-		id: 3,
-		name: "Mike Johnson",
-		email: "mike.johnson@example.com",
-		plan: "Free",
-		role: "Editor",
-		status: "Inactive",
-		signupDate: "2024-03-10",
-		lastActive: "2024-06-20",
-		country: "United Kingdom",
-	},
-	{
-		id: 4,
-		name: "Sarah Wilson",
-		email: "sarah.wilson@example.com",
-		plan: "Enterprise",
-		role: "Viewer",
-		status: "Active",
-		signupDate: "2024-01-05",
-		lastActive: "2024-07-08",
-		country: "Australia",
-	},
-	{
-		id: 5,
-		name: "David Brown",
-		email: "david.brown@example.com",
-		plan: "Premium",
-		role: "Admin",
-		status: "Active",
-		signupDate: "2024-04-12",
-		lastActive: "2024-07-06",
-		country: "Germany",
-	},
-	{
-		id: 6,
-		name: "Alice Rahman",
-		email: "alice.rahman@example.com",
-		plan: "Basic",
-		role: "Editor",
-		status: "Active",
-		signupDate: "2024-05-10",
-		lastActive: "2024-07-08",
-		country: "Bangladesh",
-	},
-	{
-		id: 7,
-		name: "Sabbir Hossain",
-		email: "sabbir.hossain@example.com",
-		plan: "Premium",
-		role: "Admin",
-		status: "Active",
-		signupDate: "2024-06-01",
-		lastActive: "2024-07-09",
-		country: "Bangladesh",
-	},
-	{
-		id: 8,
-		name: "Rafiq Islam",
-		email: "rafiq.islam@example.com",
-		plan: "Enterprise",
-		role: "Owner",
-		status: "Inactive",
-		signupDate: "2024-03-15",
-		lastActive: "2024-07-01",
-		country: "Bangladesh",
-	},
-	{
-		id: 9,
-		name: "Mitu Akter",
-		email: "mitu.akter@example.com",
-		plan: "Free",
-		role: "Viewer",
-		status: "Active",
-		signupDate: "2024-04-20",
-		lastActive: "2024-07-08",
-		country: "Bangladesh",
-	},
-	{
-		id: 10,
-		name: "Farhan Ahmed",
-		email: "farhan.ahmed@example.com",
-		plan: "Premium",
-		role: "Admin",
-		status: "Active",
-		signupDate: "2024-02-10",
-		lastActive: "2024-07-09",
-		country: "Bangladesh",
-	},
-	{
-		id: 11,
-		name: "Restaurant BD",
-		email: "info@restaurantbd.com",
-		plan: "Enterprise",
-		role: "Owner",
-		status: "Active",
-		signupDate: "2024-01-25",
-		lastActive: "2024-07-09",
-		country: "Bangladesh",
-	},
-	{
-		id: 12,
-		name: "App Team",
-		email: "support@app.com",
-		plan: "Basic",
-		role: "Editor",
-		status: "Active",
-		signupDate: "2024-03-30",
-		lastActive: "2024-07-08",
-		country: "Bangladesh",
-	},
-	{
-		id: 13,
-		name: "Support Desk",
-		email: "help@support.com",
-		plan: "Free",
-		role: "Viewer",
-		status: "Active",
-		signupDate: "2024-04-01",
-		lastActive: "2024-07-09",
-		country: "Bangladesh",
-	},
-]
-
-// Use userProfiles everywhere instead of mockUsers
-const mockUsers = userProfiles
+import { userProfiles } from "../data/userProfiles"
 
 const plans = ["All Plans", "Free", "Basic", "Premium", "Enterprise"]
 const roles = ["All Roles", "Owner", "Admin", "Editor", "Viewer"]
 const statuses = ["All Status", "Active", "Inactive"]
-const countries = ["All Countries", ...Array.from(new Set(mockUsers.map((user) => user.country)))]
 const itemsPerPageOptions = [10, 20, 50, 100]
 
 export default function Users() {
@@ -176,16 +26,20 @@ export default function Users() {
 	const [selectedPlan, setSelectedPlan] = useState("All Plans")
 	const [selectedRole, setSelectedRole] = useState("All Roles")
 	const [selectedStatus, setSelectedStatus] = useState("All Status")
-	const [selectedCountry, setSelectedCountry] = useState("All Countries")
 	const [currentPage, setCurrentPage] = useState(1)
 	const [itemsPerPage, setItemsPerPage] = useState(10)
-	const [users, setUsers] = useState(mockUsers)
+	const [selectedCountry, setSelectedCountry] = useState("All Countries")
 	const [editingUser, setEditingUser] = useState<any>(null)
 	const [deletingUser, setDeletingUser] = useState<any>(null)
 	const [deleteReason, setDeleteReason] = useState("")
 
+	const countries = [
+		"All Countries",
+		...Array.from(new Set(userProfiles.map((user) => user.country)))
+	];
+
 	const filteredUsers = useMemo(() => {
-		return users.filter((user) => {
+		return userProfiles.filter((user) => {
 			const matchesSearch =
 				user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -196,7 +50,7 @@ export default function Users() {
 
 			return matchesSearch && matchesPlan && matchesRole && matchesStatus && matchesCountry
 		})
-	}, [users, searchTerm, selectedPlan, selectedRole, selectedStatus, selectedCountry])
+	}, [userProfiles, searchTerm, selectedPlan, selectedRole, selectedStatus, selectedCountry])
 
 	const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
 	const paginatedUsers = filteredUsers.slice(
