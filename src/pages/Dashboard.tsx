@@ -62,7 +62,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">User Management Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
           Centralized interface to monitor and manage all user-related activities.
         </p>

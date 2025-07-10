@@ -175,11 +175,21 @@ const Notifications = () => {
       {/* Preview Modal */}
       {showPreview && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
-            <h3 className="font-bold text-lg mb-2">Email Preview</h3>
-            <div className="mb-2"><span className="font-medium">To:</span> {selectedUsers.map(u => u.email).join(", ")}</div>
-            <div className="mb-2"><span className="font-medium">Subject:</span> {customSubject}</div>
-            <div className="mb-4 whitespace-pre-line border rounded p-2 bg-gray-50">{customBody}</div>
+          <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md relative">
+            {/* Close (cross) button */}
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none"
+              aria-label="Close preview"
+              onClick={() => setShowPreview(false)}
+            >
+              &times;
+            </button>
+            <h3 className="font-bold text-lg mb-2 text-center">Email Preview</h3>
+            <div className="mb-2"><span className="font-medium">To:</span> <span className="break-all">{selectedUsers.map(u => u.email).join(", ")}</span></div>
+            <div className="mb-2"><span className="font-medium">Subject:</span> <span className="break-all">{customSubject}</span></div>
+            <div className="mb-4 whitespace-pre-line border rounded p-3 bg-gray-50 text-gray-800 text-sm max-h-48 overflow-y-auto">
+              {customBody}
+            </div>
             <div className="flex justify-end gap-2">
               <button className="btn" onClick={() => setShowPreview(false)}>Cancel</button>
               <button className="btn btn-primary" onClick={handleSend}>Send</button>

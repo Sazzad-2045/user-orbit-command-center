@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom"
 
 // User list used in QR Code Monitoring and everywhere else
 export const userProfiles = [
@@ -169,6 +170,7 @@ const countries = ["All Countries", ...Array.from(new Set(mockUsers.map((user) =
 const itemsPerPageOptions = [10, 20, 50, 100]
 
 export default function Users() {
+	const navigate = useNavigate();
 	const { toast } = useToast()
 	const [searchTerm, setSearchTerm] = useState("")
 	const [selectedPlan, setSelectedPlan] = useState("All Plans")
@@ -402,55 +404,55 @@ export default function Users() {
 											</Button>
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
-										<DropdownMenuItem
-											onClick={() => {
-											// Redirect to user profile page
-											window.location.href = `/user-profile?id=${user.id}`
-										}}
-										>
-											<Eye className="mr-2 h-4 w-4" />
-											View Profile
-										</DropdownMenuItem>
-										<DropdownMenuItem onClick={() => setEditingUser(user)}>
-											<Edit className="mr-2 h-4 w-4" />
-											Edit Info
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											onClick={() => {
-											// Simulate sending password reset link
-											toast({
-												title: "Password Reset",
-												description: `Password reset link sent to ${user.email}`,
-											})
-										}}
-										>
-											<RotateCcw className="mr-2 h-4 w-4" />
-											Reset Password
-										</DropdownMenuItem>
-										<DropdownMenuItem onClick={() => setEditingUser({ ...user, changePlan: true })}>
-											<CreditCard className="mr-2 h-4 w-4" />
-											Change Plan
-										</DropdownMenuItem>
-										<DropdownMenuItem onClick={() => handleStatusToggle(user.id)}>
-											{user.status === "Active" ? (
-												<>
-													<UserX className="mr-2 h-4 w-4" />
-													Suspend
-												</>
-											) : (
-												<>
-													<UserCheck className="mr-2 h-4 w-4" />
-													Reactivate
-												</>
-											)}
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											className="text-destructive"
-											onClick={() => setDeletingUser(user)}
-										>
-											<Trash2 className="mr-2 h-4 w-4" />
-											Delete Account
-										</DropdownMenuItem>
+											<DropdownMenuItem
+												onClick={() => {
+													// Use SPA navigation and pass user id as state
+													navigate("/user-profile", { state: { userId: user.id } });
+												}}
+											>
+												<Eye className="mr-2 h-4 w-4" />
+												View Profile
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => setEditingUser(user)}>
+												<Edit className="mr-2 h-4 w-4" />
+												Edit Info
+											</DropdownMenuItem>
+											<DropdownMenuItem
+												onClick={() => {
+												// Simulate sending password reset link
+												toast({
+													title: "Password Reset",
+													description: `Password reset link sent to ${user.email}`,
+												})
+											}}
+											>
+												<RotateCcw className="mr-2 h-4 w-4" />
+												Reset Password
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => setEditingUser({ ...user, changePlan: true })}>
+												<CreditCard className="mr-2 h-4 w-4" />
+												Change Plan
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => handleStatusToggle(user.id)}>
+												{user.status === "Active" ? (
+													<>
+														<UserX className="mr-2 h-4 w-4" />
+														Suspend
+													</>
+												) : (
+													<>
+														<UserCheck className="mr-2 h-4 w-4" />
+														Reactivate
+													</>
+												)}
+											</DropdownMenuItem>
+											<DropdownMenuItem
+												className="text-destructive"
+												onClick={() => setDeletingUser(user)}
+											>
+												<Trash2 className="mr-2 h-4 w-4" />
+												Delete Account
+											</DropdownMenuItem>
 										</DropdownMenuContent>
 									</DropdownMenu>
 								</TableCell>
