@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const users = [
-  { id: 1, name: "John Doe", email: "john.doe@example.com", plan: "Premium", role: "Owner" },
-  { id: 2, name: "Jane Smith", email: "jane.smith@example.com", plan: "Basic", role: "Admin" },
-  { id: 3, name: "Mike Johnson", email: "mike.johnson@example.com", plan: "Free", role: "Editor" },
-  { id: 4, name: "Sarah Wilson", email: "sarah.wilson@example.com", plan: "Enterprise", role: "Viewer" },
-];
+import { userProfiles } from "./Users";
+const users = userProfiles.slice(0, 10);
 const plans = ["Free", "Basic", "Premium", "Enterprise"];
 const roles = ["Owner", "Admin", "Editor", "Viewer"];
 const templates = [
@@ -113,19 +109,21 @@ const Notifications = () => {
             value={userSearch}
             onChange={e => setUserSearch(e.target.value)}
           />
-          <div className="overflow-y-auto max-h-56 border rounded">
+          <div className="overflow-y-auto max-h-64 border rounded scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <table className="min-w-full text-sm">
               <thead className="bg-gray-50 sticky top-0 z-10">
                 <tr>
-                  <th className="px-2 py-2 w-10"><input type="checkbox"
+                  <th className="px-2 py-2 w-10 text-center"><input type="checkbox"
                     checked={filteredUsers.length > 0 && filteredUsers.every(u => selectedUsers.includes(u))}
                     onChange={e => {
                       if (e.target.checked) setSelectedUsers(filteredUsers);
                       else setSelectedUsers([]);
                     }}
                   /></th>
-                  <th className="px-2 py-2 text-left">Name</th>
-                  <th className="px-2 py-2 text-left">Email ID</th>
+                  <th className="px-2 py-2 text-center">Name</th>
+                  <th className="px-2 py-2 text-center">Email ID</th>
+                  <th className="px-2 py-2 text-center">Plan</th>
+                  <th className="px-2 py-2 text-center">Role</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,6 +141,8 @@ const Notifications = () => {
                     </td>
                     <td className="px-2 py-1">{u.name}</td>
                     <td className="px-2 py-1">{u.email}</td>
+                    <td className="px-2 py-1">{u.plan}</td>
+                    <td className="px-2 py-1">{u.role}</td>
                   </tr>
                 ))}
                 {filteredUsers.length === 0 && (
