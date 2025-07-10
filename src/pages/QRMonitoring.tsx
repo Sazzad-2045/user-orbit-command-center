@@ -610,7 +610,7 @@ export default function QRMonitoring() {
 						/>
 						<circle cx="12" cy="9" r="3" stroke="#6366f1" strokeWidth="2" />
 					</svg>
-					QR Analytics & Reports
+					QR Analytics
 				</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 					{/* High-scan QR Codes */}

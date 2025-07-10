@@ -32,9 +32,9 @@ const navigationItems = [
   { title: "Plan Management", url: "/plan-management", icon: Package },
   { title: "Billing & Payments", url: "/billing", icon: CreditCard },
   { title: "QR Code Monitoring", url: "/qr-monitoring", icon: QrCode },
-  { title: "Analytics & Reports", url: "/analytics", icon: BarChart3 },
+  { title: "Reports", url: "/analytics", icon: BarChart3 },
   { title: "Notifications", url: "/notifications", icon: Bell },
-  { title: "Settings", url: "/settings", icon: Settings },
+  // Settings menu removed
 ]
 
 export function AppSidebar() {

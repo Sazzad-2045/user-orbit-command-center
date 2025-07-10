@@ -40,106 +40,114 @@ const recentActivity = [
   { type: "system", message: "Daily backup completed successfully", time: "3 hours ago" },
 ]
 
+import { useNavigate } from "react-router-dom"
+
+// Dummy metrics for demonstration
+const metrics = {
+  totalUsers: 12843,
+  activeUsers: 523,
+  plans: {
+    Free: 4000,
+    Basic: 3500,
+    Premium: 4000,
+    Enterprise: 1343,
+  },
+  totalQRCodes: 45231,
+  activeQRCodes: 32000,
+  scansToday: 1875,
+};
+
 export default function Dashboard() {
+  const navigate = useNavigate();
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">User Management Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome to your Super Admin Backend. Here's what's happening.
+          Centralized interface to monitor and manage all user-related activities.
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className={stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}>
-                  {stat.change}
-                </span>
-                {" "}from last month
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Recent Activity */}
+      {/* Overview Metrics */}
+      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest system events and user actions</CardDescription>
+            <CardTitle>Total Registered Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-start gap-3 text-sm">
-                  <div className={`w-2 h-2 rounded-full mt-1.5 ${
-                    activity.type === 'user' ? 'bg-blue-500' :
-                    activity.type === 'payment' ? 'bg-green-500' :
-                    activity.type === 'qr' ? 'bg-purple-500' :
-                    activity.type === 'moderation' ? 'bg-red-500' :
-                    'bg-gray-500'
-                  }`} />
-                  <div className="flex-1">
-                    <p className="text-foreground">{activity.message}</p>
-                    <p className="text-muted-foreground text-xs">{activity.time}</p>
-                  </div>
+            <div className="text-3xl font-bold">{metrics.totalUsers.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Active Users (Today)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{metrics.activeUsers.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Total QR Codes Generated</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{metrics.totalQRCodes.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Active QR Codes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{metrics.activeQRCodes.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card className="md:col-span-2 lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Subscription Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-6">
+              {Object.entries(metrics.plans).map(([plan, count]) => (
+                <div key={plan} className="flex flex-col items-center">
+                  <span className="text-lg font-semibold">{plan}</span>
+                  <span className="text-2xl font-bold text-blue-700">{count.toLocaleString()}</span>
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
-
-        {/* System Health */}
-        <Card>
+        <Card className="md:col-span-2 lg:col-span-2">
           <CardHeader>
-            <CardTitle>System Health</CardTitle>
-            <CardDescription>Current system status and performance</CardDescription>
+            <CardTitle>Total Scans Today</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Server Status</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm text-green-600">Operational</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Database</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm text-green-600">Healthy</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Payment Gateway</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full" />
-                  <span className="text-sm text-yellow-600">Degraded</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">QR Service</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm text-green-600">Operational</span>
-                </div>
-              </div>
-            </div>
+            <div className="text-3xl font-bold">{metrics.scansToday.toLocaleString()}</div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Quick Actions */}
+      <div className="flex flex-wrap gap-4 mt-8">
+        <button
+          className="px-6 py-3 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition"
+          onClick={() => navigate("/users")}
+        >
+          View User List
+        </button>
+        <button
+          className="px-6 py-3 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow transition"
+          onClick={() => navigate("/analytics")}
+        >
+          Generate Reports
+        </button>
+        <button
+          className="px-6 py-3 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow transition"
+          onClick={() => navigate("/plan-management")}
+        >
+          Manage Subscriptions
+        </button>
+      </div>
     </div>
-  )
+  );
 }

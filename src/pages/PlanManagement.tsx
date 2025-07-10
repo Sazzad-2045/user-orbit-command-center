@@ -142,10 +142,12 @@ const assignPlanSchema = z.object({
   expiryDate: z.date().optional(),
 })
 
-type CreatePlanForm = z.infer<typeof createPlanSchema>
-type AssignPlanForm = z.infer<typeof assignPlanSchema>
+type CreatePlanForm = z.infer<typeof createPlanSchema>;
+type AssignPlanForm = z.infer<typeof assignPlanSchema>;
 
-export default function PlanManagement() {
+import { useEffect, useRef } from "react";
+
+const PlanManagement = () => {
   const [plans, setPlans] = useState(mockPlans)
   const [selectedUsers, setSelectedUsers] = useState<number[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -156,6 +158,21 @@ export default function PlanManagement() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [editingPlan, setEditingPlan] = useState<any>(null)
   const { toast } = useToast()
+  const [activeTab, setActiveTab] = useState("plans");
+  const didHashScroll = useRef(false);
+
+  // Handle hash navigation for assign-plan
+  useEffect(() => {
+    if (window.location.hash === "#assign-plan" && !didHashScroll.current) {
+      setActiveTab("assign");
+      // Wait for tab to render
+      setTimeout(() => {
+        const el = document.getElementById("assign-plan");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        didHashScroll.current = true;
+      }, 200);
+    }
+  }, []);
 
   const createForm = useForm<CreatePlanForm>({
     resolver: zodResolver(createPlanSchema),
@@ -272,7 +289,7 @@ export default function PlanManagement() {
         </p>
       </div>
 
-      <Tabs defaultValue="plans" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="plans">View Plans</TabsTrigger>
           <TabsTrigger value="create">Create Plan</TabsTrigger>
@@ -487,6 +504,7 @@ export default function PlanManagement() {
 
         {/* Assign Plan Tab */}
         <TabsContent value="assign">
+          <div id="assign-plan">
           <Card>
             <CardHeader>
               <CardTitle>Assign Plan to User</CardTitle>
@@ -639,6 +657,7 @@ export default function PlanManagement() {
               </Form>
             </CardContent>
           </Card>
+          </div>
         </TabsContent>
 
         {/* Bulk Assignment Tab */}
@@ -928,3 +947,5 @@ export default function PlanManagement() {
     </div>
   )
 }
+
+export default PlanManagement;
