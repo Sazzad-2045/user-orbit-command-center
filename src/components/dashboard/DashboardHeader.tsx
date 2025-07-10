@@ -25,8 +25,14 @@ export function DashboardHeader() {
             <Button variant="ghost" size="icon" className="relative">
               <span className="relative flex items-center justify-center">
                 <Bell className="h-4 w-4" />
-                <span className="absolute -top-2 -right-2 flex items-center justify-center">
-                  <Badge className="h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center">
+                <span
+                  className="absolute -top-2 -right-3 flex items-center justify-center"
+                  style={{ right: '-10px' }}
+                >
+                  <Badge
+                    className="h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center bg-red-600 text-white border-2 border-white shadow"
+                    style={{ backgroundColor: '#ef4444', color: '#fff' }}
+                  >
                     3
                   </Badge>
                 </span>
@@ -46,12 +52,6 @@ export function DashboardHeader() {
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-medium">Payment received</p>
                 <p className="text-xs text-muted-foreground">$99 from Premium subscription</p>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium">Content flagged</p>
-                <p className="text-xs text-muted-foreground">Inappropriate content reported</p>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -193,14 +193,16 @@ export default function QRMonitoring() {
 	const navigate = useNavigate();
 
 	const filteredQRCodes = qrCodes.filter((qr) =>
-		(!filters.user ||
-			qr.user.toLowerCase().includes(filters.user.toLowerCase()) ||
-			qr.email.toLowerCase().includes(filters.user.toLowerCase())) &&
-		(!filters.type || qr.type === filters.type) &&
-		(!filters.name || qr.name.toLowerCase().includes(filters.name.toLowerCase())) &&
-		(!filters.status || qr.status === filters.status) &&
-		(!filters.date || qr.created === filters.date)
-	);
+	(
+		!filters.user ||
+		qr.user.toLowerCase().includes(filters.user.toLowerCase()) ||
+		qr.email.toLowerCase().includes(filters.user.toLowerCase()) ||
+		qr.name.toLowerCase().includes(filters.user.toLowerCase())
+	) &&
+	(!filters.type || qr.type === filters.type) &&
+	(!filters.status || qr.status === filters.status) &&
+	(!filters.date || qr.created === filters.date)
+);
 
 	return (
 		<div className="p-6 max-w-6xl mx-auto space-y-10">
@@ -216,33 +218,26 @@ export default function QRMonitoring() {
 
 			{/* Search Filters */}
 			<div className="flex flex-wrap gap-3 mb-4">
-				<input
-					className="input input-sm"
-					placeholder="User Name/Email"
-					onChange={(e) =>
-						setFilters((f) => ({ ...f, user: e.target.value }))
-					}
-				/>
-				<select
-					className="input input-sm"
-					onChange={(e) =>
-						setFilters((f) => ({ ...f, type: e.target.value }))
-					}
-				>
-					<option value="">All Types</option>
-					{qrTypes.map((type) => (
-						<option key={type} value={type}>
-							{type}
-						</option>
-					))}
-				</select>
-				<input
-					className="input input-sm"
-					placeholder="QR Name"
-					onChange={(e) =>
-						setFilters((f) => ({ ...f, name: e.target.value }))
-					}
-				/>
+			<input
+				className="input input-sm"
+				placeholder="QR Name / Name / Email"
+				onChange={(e) =>
+					setFilters((f) => ({ ...f, user: e.target.value }))
+				}
+			/>
+			<select
+				className="input input-sm"
+				onChange={(e) =>
+					setFilters((f) => ({ ...f, type: e.target.value }))
+				}
+			>
+				<option value="">All Types</option>
+				{qrTypes.map((type) => (
+					<option key={type} value={type}>
+						{type}
+					</option>
+				))}
+			</select>
 				<select
 					className="input input-sm"
 					onChange={(e) =>
