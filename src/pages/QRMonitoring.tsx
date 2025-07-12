@@ -32,6 +32,31 @@ const qrCodes = [
 			],
 		},
 	},
+  {
+	id: "QR-011",
+	name: "John's Portfolio",
+	type: "URL",
+	user: "John Doe",
+	email: "john.doe@example.com",
+	created: "2025-07-10",
+	status: "Active",
+	scans: 150,
+	content: "https://johndoe.com/portfolio",
+	isDynamic: false,
+	analytics: {
+	  total: 150,
+	  unique: 120,
+	  byLocation: [
+		{ country: "Bangladesh", city: "Dhaka", scans: 80 },
+		{ country: "India", city: "Kolkata", scans: 70 },
+	  ],
+	  daily: [
+		{ date: "2025-07-10", scans: 30 },
+		{ date: "2025-07-11", scans: 40 },
+		{ date: "2025-07-12", scans: 80 },
+	  ],
+	},
+  },
 	{
 		id: "QR-002",
 		name: "Event Poster",
