@@ -33,8 +33,16 @@ const navigationItems = [
   { title: "QR Code Monitoring", url: "/qr-monitoring", icon: QrCode },
   { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Notifications", url: "/notifications", icon: Bell },
-  { title: "Admin Management", url: "/admin-permission", icon: Shield },
-  // Settings menu removed
+  {
+    title: "Admin Permission",
+    url: "/admin-permission",
+    icon: Shield,
+    children: [
+      { title: "Add User", url: "/admin-permission/add-user" },
+      { title: "Assign User", url: "/admin-permission/assign-user" },
+    ],
+    showSubmenu: false,
+  },
 ]
 
 export function AppSidebar() {
@@ -69,18 +77,53 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild
-                    isActive={isActive(item.url)}
-                    tooltip={isCollapsed ? item.title : undefined}
-                  >
-                    <NavLink to={item.url} end={item.url === "/"}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                item.title === "Admin Permission" ? (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton 
+                      asChild
+                      isActive={isActive(item.url)}
+                      tooltip={isCollapsed ? item.title : undefined}
+                    >
+                      <button type="button" onClick={e => {
+                        e.preventDefault();
+                        // Toggle submenu visibility
+                        item.showSubmenu = !item.showSubmenu;
+                        // Force re-render
+                        window.location.hash = Math.random();
+                      }}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </button>
+                    </SidebarMenuButton>
+                    {/* Submenu: only show if toggled */}
+                    {item.showSubmenu && (
+                      <SidebarMenu style={{ paddingLeft: isCollapsed ? 0 : 32 }}>
+                        {item.children.map((child) => (
+                          <SidebarMenuItem key={child.title}>
+                            <SidebarMenuButton asChild isActive={isActive(child.url)} tooltip={isCollapsed ? child.title : undefined}>
+                              <NavLink to={child.url}>
+                                <span>{child.title}</span>
+                              </NavLink>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ))}
+                      </SidebarMenu>
+                    )}
+                  </SidebarMenuItem>
+                ) : (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton 
+                      asChild
+                      isActive={isActive(item.url)}
+                      tooltip={isCollapsed ? item.title : undefined}
+                    >
+                      <NavLink to={item.url} end={item.url === "/"}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

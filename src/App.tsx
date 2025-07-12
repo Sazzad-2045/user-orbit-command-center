@@ -19,6 +19,8 @@ import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import { UserProvider } from "./pages/UserProfile";
 import AdminPermission from "./pages/AdminPermission";
+import AssignUser from "./pages/AssignUser";
+import AddUser from "./pages/AddUser";
 import "@/App.css";
 
 const queryClient = new QueryClient();
@@ -43,6 +45,8 @@ const App = () => (
             <Route path="/settings" element={<DashboardLayout><Settings /></DashboardLayout>} />
             <Route path="/user-profile" element={<DashboardLayout><UserProfile /></DashboardLayout>} />
             <Route path="/admin-permission" element={<DashboardLayout><AdminPermission /></DashboardLayout>} />
+            <Route path="/admin-permission/assign-user" element={<DashboardLayout><AssignUser /></DashboardLayout>} />
+            <Route path="/admin-permission/add-user" element={<DashboardLayout><AddUser /></DashboardLayout>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
