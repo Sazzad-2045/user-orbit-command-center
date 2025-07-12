@@ -27,13 +27,13 @@ import {
 
 const navigationItems = [
   { title: "Dashboard", url: "/", icon: Home },
-  { title: "User Management", url: "/users", icon: Users },
   { title: "User Profile", url: "/user-profile", icon: Users },
   { title: "Plan Management", url: "/plan-management", icon: Package },
   { title: "Billing & Payments", url: "/billing", icon: CreditCard },
   { title: "QR Code Monitoring", url: "/qr-monitoring", icon: QrCode },
-  { title: "Reports", url: "/analytics", icon: BarChart3 },
+  { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Notifications", url: "/notifications", icon: Bell },
+  { title: "Admin Management", url: "/admin-permission", icon: Shield },
   // Settings menu removed
 ]
 

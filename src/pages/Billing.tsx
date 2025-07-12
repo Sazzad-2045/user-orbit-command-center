@@ -176,13 +176,15 @@ export default function Billing() {
 		notes: "",
 		file: null,
 	});
-	const [filters, setFilters] = useState({
-		user: "",
-		plan: "",
-		method: "",
-		status: "",
-		date: "",
-	});
+const planOptions = ["Basic", "Pro", "Premium", "Enterprise"];
+const methodOptions = ["Stripe", "bKash", "Card", "Nagad", "Bank"];
+const [filters, setFilters] = useState({
+	user: "",
+	plan: "",
+	method: "",
+	status: "",
+	date: "",
+});
 	const [refundAction, setRefundAction] = useState({ id: null, type: null });
 	const [rejectReason, setRejectReason] = useState("");
 	const navigate = useNavigate();
@@ -213,35 +215,39 @@ export default function Billing() {
 				>
 					Back to Dashboard
 				</button>
-				<button
-					className="px-4 py-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium transition"
-					onClick={() => setShowUpload(true)}
-				>
-					Manual Invoice Upload
-				</button>
 			</div>
 
 			{/* Filters */}
 			<div className="flex flex-wrap gap-3 mb-4">
 				<input
-					className="input input-sm"
+				className="input input-sm border border-gray-300 rounded"
 					placeholder="User Name/Email"
 					onChange={(e) =>
 						setFilters((f) => ({ ...f, user: e.target.value }))
 					}
 				/>
-				<input
-					className="input input-sm"
-					placeholder="Plan"
-					onChange={(e) => setFilters((f) => ({ ...f, plan: e.target.value }))}
-				/>
-				<input
-					className="input input-sm"
-					placeholder="Payment Method"
-					onChange={(e) => setFilters((f) => ({ ...f, method: e.target.value }))}
-				/>
+			<select
+				className="input input-sm border border-gray-300 rounded"
+				value={filters.plan}
+				onChange={(e) => setFilters((f) => ({ ...f, plan: e.target.value }))}
+			>
+				<option value="">All Plans</option>
+				{planOptions.map((plan) => (
+					<option key={plan} value={plan}>{plan}</option>
+				))}
+			</select>
+			<select
+				className="input input-sm border border-gray-300 rounded"
+				value={filters.method}
+				onChange={(e) => setFilters((f) => ({ ...f, method: e.target.value }))}
+			>
+				<option value="">All Methods</option>
+				{methodOptions.map((method) => (
+					<option key={method} value={method}>{method}</option>
+				))}
+			</select>
 				<select
-					className="input input-sm"
+				className="input input-sm border border-gray-300 rounded"
 					onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
 				>
 					<option value="">All Status</option>
@@ -250,16 +256,16 @@ export default function Billing() {
 					<option value="Pending">Pending</option>
 				</select>
 				<input
-					type="date"
-					className="input input-sm"
-					onChange={(e) => setFilters((f) => ({ ...f, date: e.target.value }))}
-				/>
+				type="date"
+				className="input input-sm border border-gray-300 rounded"
+				onChange={(e) => setFilters((f) => ({ ...f, date: e.target.value }))}
+			/>
 				<button
-					className="btn btn-sm"
-					onClick={() => alert("Exported as CSV/XLSX!")}
-				>
-					Export
-				</button>
+				className="px-4 py-2 rounded bg-green-100 hover:bg-green-200 text-green-700 font-medium transition"
+				onClick={() => alert("Exported as CSV/XLSX!")}
+			>
+				Export
+			</button>
 			</div>
 
 			{/* Transaction Table with Pagination */}
