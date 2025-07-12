@@ -26,6 +26,127 @@ const transactions = [
 		date: "2025-07-03",
 		invoice: { id: "INV-002", file: "invoice-002.pdf" },
 	},
+	// Additional 10 users with some repeated users and different plans/dates
+	{
+		id: "TXN-003",
+		user: "Alice Rahman",
+		email: "alice.rahman@example.com",
+		plan: "Premium",
+		amount: 1500,
+		currency: "৳",
+		method: "Card",
+		status: "Success",
+		date: "2025-07-04",
+		invoice: { id: "INV-003", file: "invoice-003.pdf" },
+	},
+	{
+		id: "TXN-004",
+		user: "Sabbir Hossain",
+		email: "sabbir.hossain@example.com",
+		plan: "Basic",
+		amount: 800,
+		currency: "৳",
+		method: "bKash",
+		status: "Success",
+		date: "2025-07-05",
+		invoice: { id: "INV-004", file: "invoice-004.pdf" },
+	},
+	{
+		id: "TXN-005",
+		user: "Rafiq Islam",
+		email: "rafiq.islam@example.com",
+		plan: "Pro",
+		amount: 1200,
+		currency: "৳",
+		method: "Nagad",
+		status: "Failed",
+		date: "2025-07-06",
+		invoice: { id: "INV-005", file: "invoice-005.pdf" },
+	},
+	{
+		id: "TXN-006",
+		user: "Mitu Akter",
+		email: "mitu.akter@example.com",
+		plan: "Premium",
+		amount: 1500,
+		currency: "৳",
+		method: "Card",
+		status: "Success",
+		date: "2025-07-07",
+		invoice: { id: "INV-006", file: "invoice-006.pdf" },
+	},
+	{
+		id: "TXN-007",
+		user: "Farhan Ahmed",
+		email: "farhan.ahmed@example.com",
+		plan: "Basic",
+		amount: 800,
+		currency: "৳",
+		method: "bKash",
+		status: "Success",
+		date: "2025-07-08",
+		invoice: { id: "INV-007", file: "invoice-007.pdf" },
+	},
+	{
+		id: "TXN-008",
+		user: "Restaurant BD",
+		email: "info@restaurantbd.com",
+		plan: "Enterprise",
+		amount: 3000,
+		currency: "৳",
+		method: "Bank",
+		status: "Success",
+		date: "2025-07-09",
+		invoice: { id: "INV-008", file: "invoice-008.pdf" },
+	},
+	{
+		id: "TXN-009",
+		user: "App Team",
+		email: "support@app.com",
+		plan: "Pro",
+		amount: 1200,
+		currency: "৳",
+		method: "Stripe",
+		status: "Pending",
+		date: "2025-07-10",
+		invoice: { id: "INV-009", file: "invoice-009.pdf" },
+	},
+	{
+		id: "TXN-010",
+		user: "Support Desk",
+		email: "help@support.com",
+		plan: "Basic",
+		amount: 800,
+		currency: "৳",
+		method: "bKash",
+		status: "Success",
+		date: "2025-07-11",
+		invoice: { id: "INV-010", file: "invoice-010.pdf" },
+	},
+	{
+		id: "TXN-011",
+		user: "John Doe",
+		email: "john.doe@example.com",
+		plan: "Basic",
+		amount: 800,
+		currency: "৳",
+		method: "bKash",
+		status: "Success",
+		date: "2025-07-12",
+		invoice: { id: "INV-011", file: "invoice-011.pdf" },
+	},
+	{
+		id: "TXN-012",
+		user: "Jane Smith",
+		email: "jane.smith@example.com",
+		plan: "Premium",
+		amount: 1500,
+		currency: "৳",
+		method: "Card",
+		status: "Success",
+		date: "2025-07-13",
+		invoice: { id: "INV-012", file: "invoice-012.pdf" },
+	},
 ];
 
 const refundRequests = [
@@ -75,6 +196,12 @@ export default function Billing() {
 		(!filters.status || txn.status === filters.status) &&
 		(!filters.date || txn.date === filters.date)
 	);
+
+	// Pagination logic
+	const [page, setPage] = useState(1);
+	const rowsPerPage = 5;
+	const totalPages = Math.ceil(filteredTxns.length / rowsPerPage);
+	const paginatedTxns = filteredTxns.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
 	return (
 		<div className="p-6 max-w-6xl mx-auto space-y-10">
@@ -135,7 +262,7 @@ export default function Billing() {
 				</button>
 			</div>
 
-			{/* Transaction Table */}
+			{/* Transaction Table with Pagination */}
 			<div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-100">
 				<table className="table-auto w-full text-left">
 					<thead className="bg-gray-50">
@@ -152,7 +279,7 @@ export default function Billing() {
 						</tr>
 					</thead>
 					<tbody>
-						{filteredTxns.map((txn) => (
+						{paginatedTxns.map((txn) => (
 							<tr key={txn.id} className="border-t border-gray-100">
 								<td
 									className="px-4 py-2 cursor-pointer text-blue-700 hover:underline"
@@ -188,6 +315,24 @@ export default function Billing() {
 						))}
 					</tbody>
 				</table>
+				{/* Pagination Controls */}
+				<div className="flex justify-end items-center gap-2 p-4">
+					<button
+						className="btn btn-xs"
+						disabled={page === 1}
+						onClick={() => setPage(page - 1)}
+					>
+						Prev
+					</button>
+					<span className="text-sm">Page {page} of {totalPages}</span>
+					<button
+						className="btn btn-xs"
+						disabled={page === totalPages}
+						onClick={() => setPage(page + 1)}
+					>
+						Next
+					</button>
+				</div>
 			</div>
 
 			{/* Invoice Pop-up */}
@@ -287,100 +432,7 @@ export default function Billing() {
 				</div>
 			)}
 
-			{/* Refunds/Disputes */}
-			<section className="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-100">
-				<h2 className="text-xl font-semibold mb-4 text-gray-800">
-					Refunds & Disputes
-				</h2>
-				<table className="table-auto w-full text-left">
-					<thead className="bg-gray-100">
-						<tr>
-							<th className="px-4 py-2">User</th>
-							<th className="px-4 py-2">Email</th>
-							<th className="px-4 py-2">Amount</th>
-							<th className="px-4 py-2">Reason</th>
-							<th className="px-4 py-2">Date</th>
-							<th className="px-4 py-2">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{refundRequests.map((req) => (
-							<tr key={req.id} className="border-t border-gray-100">
-								<td
-									className="px-4 py-2 cursor-pointer text-blue-700 hover:underline"
-									onClick={() => navigate(`/user-profile?email=${req.email}`)}
-								>
-									{req.user}
-								</td>
-								<td className="px-4 py-2">{req.email}</td>
-								<td className="px-4 py-2">
-									{formatCurrency(req.amount, req.currency)}
-								</td>
-								<td className="px-4 py-2">{req.reason}</td>
-								<td className="px-4 py-2">{req.date}</td>
-								<td className="px-4 py-2 flex gap-1">
-									<button
-										className="btn btn-xs bg-green-100 hover:bg-green-200 text-green-700"
-										onClick={() => setRefundAction({ id: req.id, type: "approve" })}
-									>
-										Approve
-									</button>
-									<button
-										className="btn btn-xs bg-red-100 hover:bg-red-200 text-red-700"
-										onClick={() => setRefundAction({ id: req.id, type: "reject" })}
-									>
-										Reject
-									</button>
-									<button
-										className="btn btn-xs bg-blue-100 hover:bg-blue-200 text-blue-700"
-										onClick={() => navigate(`/support-tickets?refund=${req.id}`)}
-									>
-										Assign to Support
-									</button>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-
-			{/* Refund Action Pop-up */}
-			{refundAction.id && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-					<div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
-						<h3 className="font-bold text-lg mb-2">
-							{refundAction.type === "approve"
-								? "Approve Refund"
-								: "Reject Refund"}
-						</h3>
-						{refundAction.type === "reject" && (
-							<input
-								className="input w-full my-2"
-								placeholder="Rejection Reason"
-								value={rejectReason}
-								onChange={(e) => setRejectReason(e.target.value)}
-							/>
-						)}
-						<div className="flex justify-end gap-2 mt-4">
-							<button
-								className="btn"
-								onClick={() => setRefundAction({ id: null, type: null })}
-							>
-								Cancel
-							</button>
-							<button
-								className="btn btn-success"
-								onClick={() => {
-									setRefundAction({ id: null, type: null });
-									alert("Refund processed!");
-								}}
-							>
-								Confirm
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
+			{/* Refunds & Disputes section removed as per request */}
 		</div>
 	);
 }

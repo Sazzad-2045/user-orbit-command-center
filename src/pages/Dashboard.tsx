@@ -127,27 +127,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <div className="flex flex-wrap gap-4 mt-8">
-        <button
-          className="px-6 py-3 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition"
-          onClick={() => navigate("/users")}
-        >
-          View User List
-        </button>
-        <button
-          className="px-6 py-3 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow transition"
-          onClick={() => navigate("/analytics")}
-        >
-          Generate Reports
-        </button>
-        <button
-          className="px-6 py-3 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow transition"
-          onClick={() => navigate("/plan-management")}
-        >
-          Manage Subscriptions
-        </button>
-      </div>
+      {/* Quick Actions removed as per request */}
     </div>
   );
 }
