@@ -133,6 +133,8 @@ const createPlanSchema = z.object({
   pricing: z.number().min(0, "Pricing must be non-negative"),
   billingCycle: z.enum(["monthly", "quarterly", "biannual"]),
   status: z.enum(["active", "inactive"]),
+  type: z.enum(["Dynamic", "Static"]),
+  expiryDate: z.date().optional(), // Add expiryDate field
 })
 
 const assignPlanSchema = z.object({
@@ -179,6 +181,8 @@ const PlanManagement = () => {
     defaultValues: {
       status: "active",
       billingCycle: "monthly",
+      type: "Dynamic",
+      expiryDate: undefined,
     },
   })
 
@@ -396,6 +400,28 @@ const PlanManagement = () => {
                         </FormItem>
                       )}
                     />
+                    {/* Type Dropdown */}
+                    <FormField
+                      control={createForm.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Type</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Dynamic">Dynamic</SelectItem>
+                              <SelectItem value="Static">Static</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
 
                   <FormField
@@ -451,7 +477,7 @@ const PlanManagement = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Billing Cycle</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select billing cycle" />
@@ -473,7 +499,7 @@ const PlanManagement = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Status</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select status" />
@@ -484,6 +510,49 @@ const PlanManagement = () => {
                               <SelectItem value="inactive">Inactive</SelectItem>
                             </SelectContent>
                           </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Expiry Date Field */}
+                    <FormField
+                      control={createForm.control}
+                      name="expiryDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Expiring Date (Optional)</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant="outline"
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                initialFocus
+                                className="p-3 pointer-events-auto"
+                              />
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}
